@@ -80,3 +80,23 @@ steps:
     WebAppName: 'api-cart'
     packageForLinux: '$(System.ArtifactsDirectory)/build$(Build.BuildId).zip'
     RuntimeStack: 'DOTNETCORE|6.0'
+
+- task: AzureAppServiceSettings@1
+  inputs:
+    azureSubscription: 'Azure subscription 1(ee3efd09-b62b-44aa-9982-85306371f4b2)'
+    appName: 'api-cart'
+    resourceGroupName: 'api-cart_group'
+    appSettings: |
+      [
+         {
+          "name": "key1",
+          "value": "valueabcd",
+          "slotSetting": false
+         },
+         {
+          "name": "key2",
+          "value": "valueefgh",
+          "slotSetting": true
+         }
+      ]
+    
