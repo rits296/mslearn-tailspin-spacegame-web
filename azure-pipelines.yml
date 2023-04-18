@@ -41,11 +41,36 @@ steps:
     command: 'build'
     arguments: '--no-restore --configuration Release'
     projects: '**/*.csproj'
+- task: DotNetCoreCLI@2
+  displayName: 'Publish artefacts'
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    modifyOutputPath: false
+    zipAfterPublish: false
+    projects: '**/*.csproj'
+    arguments: '--configuration Release --output publish_output'
+
+- task: ArchiveFiles@2
+  displayName: 'Archive to ZIP'
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/publish_output'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(System.ArtifactsDirectory)/build$(Build.BuildId).zip'
+    replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(System.ArtifactsDirectory)/build$(Build.BuildId).zip'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
     azureSubscription: 'Azure subscription 1(ee3efd09-b62b-44aa-9982-85306371f4b2)'
     appType: 'webAppLinux'
     WebAppName: 'api-cart'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    packageForLinux: '$(System.ArtifactsDirectory)/build$(Build.BuildId).zip'
     RuntimeStack: 'DOTNETCORE|6.0'
