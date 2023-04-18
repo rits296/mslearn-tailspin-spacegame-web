@@ -89,14 +89,18 @@ steps:
     appSettings: |
       [
          {
-          "name": "key1",
-          "value": "valueabcd",
-          "slotSetting": false
+          "name": "CTP_API_URL",
+          "value": "somevalue-1"         
          },
          {
-          "name": "key2",
-          "value": "valueefgh",
-          "slotSetting": true
+          "name": "CTP_AUTH_URL",
+          "value": "somevalue-url"        
+         },
+         {
+          "name": "CTP_CLIENT_SECRET",
+          "value": "$(CTP_CLIENT_SECRET)"        
          }
+
+
       ]
     
