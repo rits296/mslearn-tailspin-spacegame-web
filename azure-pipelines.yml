@@ -10,8 +10,12 @@ pr:
 pool:
   vmImage: 'ubuntu-22.04'
 
+# variables:
+#   buildConfiguration: 'Release'
+
 variables:
-  buildConfiguration: 'Release'
+- group: CT_Variable
+
 
 steps:
 - task: UseDotNet@2
@@ -90,11 +94,11 @@ steps:
       [
          {
           "name": "CTP_API_URL",
-          "value": "somevalue-1"         
+          "value": "$(CTP_API_URL)"         
          },
          {
           "name": "CTP_AUTH_URL",
-          "value": "somevalue-url"        
+          "value": "$(CTP_AUTH_URL)"        
          },
          {
           "name": "CTP_CLIENT_SECRET",
